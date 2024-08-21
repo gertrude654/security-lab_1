@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
         User createdUser = userService.saveUser(user);
-        return ResponseEntity.ok(createdUser);
+        return ResponseEntity.ok(HtmlUtils.htmlEscape(String.valueOf(createdUser)));
     }
 
     @GetMapping("/{id}")
