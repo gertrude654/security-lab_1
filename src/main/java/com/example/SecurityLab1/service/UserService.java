@@ -1,44 +1,8 @@
-//package com.example.SecurityLab1.service;
-//
-//import com.example.SecurityLab1.model.User;
-//
-//import com.example.SecurityLab1.repo.UserRepo;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class UserService {
-//
-//
-//    private UserRepo userRepo;
-//
-//    @Autowired
-//    public UserService(UserRepo userRepo) {
-//        this.userRepo = userRepo;
-//    }
-//
-//    public User saveUser(User user) {
-//        // Validate and save user
-//        return userRepo.save(user);
-//    }
-//    public List<User> AllUsers() {
-//        return userRepo.findAll();
-//    }
-//
-//    public User getUserById(int id) {
-//        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-//    }
-//
-//}
-
-
 package com.example.SecurityLab1.service;
 
+import com.example.SecurityLab1.controller.UserNotFoundException;
 import com.example.SecurityLab1.model.User;
 import com.example.SecurityLab1.repo.UserRepo;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
@@ -63,7 +27,7 @@ public class UserService {
 
     public User getUserById(int id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(this::sanitizeUser).orElse(null);
+        return user.map(this::sanitizeUser).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public List<User> getAllUsers() {
@@ -82,8 +46,6 @@ public class UserService {
     }
 
     private String escapeHtml(String input) {
-       // return StringEscapeUtils.escapeHtml4(input);
-        return HtmlUtils.htmlEscape(input);
-
+        return HtmlUtils.htmlEscape(input); // Sanitize input to prevent XSS
     }
 }
