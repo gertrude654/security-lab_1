@@ -23,11 +23,18 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> getUserById(@PathVariable int id) {
+//        User user = userService.getUserById(id);
+//        return ResponseEntity.ok(user);
+//    }
+@GetMapping("/{id}")
+public ResponseEntity<String> getUserById(@PathVariable int id) {
+    User user = userService.getUserById(id);
+    // This is a potential XSS vulnerability if user data is not sanitized
+    return ResponseEntity.ok("User: " + user.getFirstName());
+}
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
        List<User> user = userService.getAllUsers();
