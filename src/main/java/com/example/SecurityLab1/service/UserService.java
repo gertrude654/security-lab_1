@@ -17,11 +17,12 @@ public class UserService {
     private UserRepo userRepository;
 
     public User saveUser(User user) {
-        // Sanitize inputs before saving to the database
-        user.setFirstName(escapeHtml(user.getFirstName()));
-        user.setLastName(escapeHtml(user.getLastName()));
-        user.setEmail(escapeHtml(user.getEmail()));
+//        // Sanitize inputs before saving to the database
+//        user.setFirstName(escapeHtml(user.getFirstName()));
+//        user.setLastName(escapeHtml(user.getLastName()));
+//        user.setEmail(escapeHtml(user.getEmail()));
 
+        // ruleid: sanitize-user-data
         return userRepository.save(user);
     }
 
